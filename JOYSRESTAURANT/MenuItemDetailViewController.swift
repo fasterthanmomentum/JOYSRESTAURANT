@@ -9,7 +9,7 @@
 import UIKit
 
 class MenuItemDetailViewController: UIViewController {
-
+    var menuItem: MenuItem!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,5 +26,5 @@ class MenuItemDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
 }

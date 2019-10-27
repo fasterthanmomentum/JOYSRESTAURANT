@@ -28,8 +28,7 @@ func fetchCategories(completion: @escaping ([String]?) -> Void) {
     task.resume()
     }
 
-    func fetchMenuItems(forCategory categoryName: String,
-       completion: @escaping ([MenuItem]?) -> Void) {
+    func fetchMenuItems(forCategory categoryName: String, completion: @escaping ([MenuItem]?) -> Void) {
         let initialMenuURL = baseURL.appendingPathComponent("menu")
         var components = URLComponents(url: initialMenuURL,
         resolvingAgainstBaseURL: true)!
@@ -61,8 +60,7 @@ func submitOrder(forMenuIDs menuIds: [Int], completion: @escaping (Int?) -> Void
         { (data, response, error) in
         let jsonDecoder = JSONDecoder()
             if let data = data,
-            let preparationTime = try?
-                jsonDecoder.decode(PreparationTime.self, from: data) {
+            let preparationTime = try? jsonDecoder.decode(PreparationTime.self, from: data) {
                 completion(preparationTime.prepTime)
             } else {
                 completion(nil)

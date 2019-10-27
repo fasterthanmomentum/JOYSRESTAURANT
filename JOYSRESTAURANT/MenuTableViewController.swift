@@ -7,48 +7,70 @@
 //
 
 import UIKit
+import Foundation
 
 class MenuTableViewController: UITableViewController {
-    var category: String!
+    
+    let menuController = MenuController()
+    var menuItems = [MenuItem]()
+    var name: String!
+    var categoryName: String!
+    
+    func updateUI(with menuItems: [MenuItem]) {
+         DispatchQueue.main.async {
+             self.menuItems = menuItems
+             self.tableView.reloadData()
+         }
+     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "entree"
+        menuController.fetchMenuItems(forCategory: categoryName)
+        { (MenuItems) in
+            if let menuItems = MenuItems {
+                self.updateUI(with: menuItems)
+        }
+        }
+    }
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
+    
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 0
+//    }
+//
+        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return menuItems.count
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCellIdentifier", for: indexPath)
+        configure(cell, forItemAt: indexPath)
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+        let menuItem = menuItems[indexPath.row]
+        cell.textLabel?.text = menuItem.name
+        cell.detailTextLabel?.text = "$\(menuItem.price)"
     }
-    */
+    
+
+
+//    // Override to support conditional editing of the table view.
+//    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        // Return false if you do not want the specified item to be editable.
+//        return true
+//    }
+//
 
     /*
     // Override to support editing the table view.
@@ -86,5 +108,13 @@ class MenuTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+        override func prepare(for segue:  UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MenuDetailSegue" {
+            let menuItemDetailViewController = segue.destination as! MenuItemDetailViewController
+            let index = tableView.indexPathForSelectedRow!.row
+            menuItemDetailViewController.menuItem = menuItems[index]
+        }
+    }
 
 }

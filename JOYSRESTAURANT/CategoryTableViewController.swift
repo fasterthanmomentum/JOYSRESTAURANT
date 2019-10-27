@@ -12,29 +12,34 @@ class CategoryTableViewController: UITableViewController {
     let menuController = MenuController()
     var categories = [String]()
 
+    func updateUI(with categories: [String]) {
+            DispatchQueue.main.async {
+                self.categories = categories
+                self.tableView.reloadData()
+            }
+        }
+
+    
+        
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+      
         menuController.fetchCategories{ (categories) in
             if let categories = categories {
                 self.updateUI(with: categories)
             }
         }
-
+    }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
     
-    func updateUI(with categories: [String]) {
-        DispatchQueue.main.async {
-            self.categories = categories
-            self.tableView.reloadData()
-        }
-    }
-
-
+    
     
     
     // MARK: - Table view data source
@@ -116,8 +121,8 @@ class CategoryTableViewController: UITableViewController {
             let menuTableViewController = segue.destination as!
             MenuTableViewController
             let index = tableView.indexPathForSelectedRow!.row
-            menuTableViewController.category = categories [index]
-        }    }
-    
+            menuTableViewController.name = categories [index]
+        }
+    }
     
 }
