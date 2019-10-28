@@ -25,13 +25,9 @@ class MenuTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "entree"
-        menuController.fetchMenuItems(forCategory: categoryName)
-        { (MenuItems) in
-            if let menuItems = MenuItems {
-                self.updateUI(with: menuItems)
-        }
-        }
+      
+        //title = categoryName.capitalized
+        
     }
         
         // Uncomment the following line to preserve selection between presentations
